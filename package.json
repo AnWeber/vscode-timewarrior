@@ -1,0 +1,226 @@
+{
+    "name": "timewarrior",
+    "displayName": "timewarrior",
+    "description": "add timewarrior commands",
+    "version": "0.0.1",
+    "publisher": "anweber",
+    "license": "ISC",
+    "engines": {
+        "vscode": "^1.61.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "keywords": [
+        "statusbar",
+        "command",
+        "toolbar"
+    ],
+    "icon": "icon.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AnWeber/timewarrior"
+    },
+    "bugs": {
+        "url": "https://github.com/AnWeber/timewarrior/issues"
+    },
+    "main": "./dist/extension.js",
+    "browser": "dist/browser.js",
+    "capabilities": {
+        "virtualWorkspaces": true,
+        "untrustedWorkspaces": {
+            "supported": true
+        }
+    },
+    "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "Timewarrior",
+            "properties": {
+                "timewarrior.commands": {
+                    "type": [
+                        "array"
+                    ],
+                    "scope": "resource",
+                    "description": "array of commands",
+                    "items": {
+                        "type": "object",
+                        "description": "command object",
+                        "properties": {
+                            "alignment": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ],
+                                "enum": [
+                                    "left",
+                                    "right"
+                                ],
+                                "description": "The alignment of this item."
+                            },
+                            "priority": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "description": "The priority of this item. Higher value means the item should be shown more to the left."
+                            },
+                            "color": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ],
+                                "description": "The foreground color for this entry."
+                            },
+                            "backgroundColor": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ],
+                                "enum": [
+                                    "statusBarItem.warningBackground",
+                                    "statusBarItem.errorBackground"
+                                ],
+                                "description": "The background color for this entry."
+                            },
+                            "command": {
+                                "type": "string",
+                                "description": "The identifier of a command to run on click."
+                            },
+                            "arguments": {
+                                "type": [
+                                    "array"
+                                ],
+                                "description": "Arguments that the command handler should be invoked with."
+                            },
+                            "text": {
+                                "type": "string",
+                                "description": "The text to show for the entry. You can embed icons in the text by leveraging the syntax: \"$(icon name)\". Where the icon-name is taken from the octicon icon set"
+                            },
+                            "id": {
+                                "type": "string",
+                                "description": "The identifier of this item"
+                            },
+                            "name": {
+                                "type": "string",
+                                "description": "The name of the entry"
+                            },
+                            "tooltip": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ],
+                                "description": "The tooltip text when you hover over this entry."
+                            },
+                            "include": {
+                                "type": "string",
+                                "description": "if RegEx is valid, then the StatusbarItem is shown"
+                            },
+                            "includeFlags": {
+                                "type": "string",
+                                "description": "regex pattern for include"
+                            },
+                            "exclude": {
+                                "type": "string",
+                                "description": "if RegEx is invalid, then the StatusbarItem is shown"
+                            },
+                            "excludeFlags": {
+                                "type": "string",
+                                "description": "regex pattern for exclude"
+                            },
+                            "filterLanguageId": {
+                                "type": "string",
+                                "description": "if regex match languageId"
+                            },
+                            "filterLanguageIdFlags": {
+                                "type": "string",
+                                "description": "regex pattern for filterLanguageId"
+                            },
+                            "filterFileName": {
+                                "type": "string",
+                                "description": "if regex match filename"
+                            },
+                            "filterFileNameFlags": {
+                                "type": "string",
+                                "description": "regex pattern for filterFileName"
+                            },
+                            "filterFilepath": {
+                                "type": "string",
+                                "description": "if regex match filepath"
+                            },
+                            "filterFilepathFlags": {
+                                "type": "string",
+                                "description": "regex pattern for filterFilepath"
+                            },
+                            "filterText": {
+                                "type": "string",
+                                "description": "if regex match current text"
+                            },
+                            "filterTextFlags": {
+                                "type": "string",
+                                "description": "regex pattern for filterText"
+                            },
+                            "scriptEvents": {
+                                "type": "array",
+                                "description": "list of events"
+                            },
+                            "script": {
+                                "type": "string",
+                                "description": "script to execute if event is triggered"
+                            },
+                            "scriptFile": {
+                                "type": "string",
+                                "description": "Path to the javascript script file"
+                            }
+                        },
+                        "required": [
+                            "text"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "scripts": {
+        "format": "prettier --write --parser typescript \"src/**/*.ts?(x)\"",
+        "vscode:prepublish": "npm run compile && npm run compile-web",
+        "esbuild": "esbuild ./src/extension.ts --bundle --outdir=dist/ --sourcemap --platform=node --external:vscode --format=cjs",
+        "compile": "npm run esbuild -- --minify",
+        "watch": "npm run esbuild -- --sourcemap --watch",
+        "tsc-watch": "tsc --watch",
+        "esbuild-web": "esbuild ./src/browser.ts --bundle --outfile=dist/browser.js --platform=browser --format=cjs --external:vscode",
+        "compile-web": "npm run esbuild-web -- --minify",
+        "watch-web": "npm run esbuild-web -- --sourcemap --watch",
+        "lockfile-lint": "lockfile-lint --path package-lock.json --validate-https --allowed-hosts npm --validate-checksum --validate-integrity",
+        "eslint": "eslint src --ext ts",
+        "lint": "npm run format && npm run eslint && npm run lockfile-lint && tsc --noEmit",
+        "prepare": "husky install",
+        "package": "npx vsce package"
+    },
+    "lint-staged": {
+      "*.js": [
+        "prettier --write"
+      ],
+      "*.ts?(x)": [
+        "eslint --cache --fix",
+        "prettier --parser=typescript --write"
+      ]
+    },
+    "devDependencies": {
+        "@types/node": "^18.7.14",
+        "@types/vscode": "^1.61.0",
+        "@typescript-eslint/eslint-plugin": "5.36.1",
+        "@typescript-eslint/parser": "5.36.1",
+        "esbuild": "^0.15.6",
+        "eslint": "^8.23.0",
+        "eslint-config-prettier": "^8.5.0",
+        "husky": "^8.0.1",
+        "lint-staged": "^13.0.3",
+        "lockfile-lint": "^4.8.0",
+        "prettier": "^2.7.1",
+        "typescript": "^4.8.2"
+    }
+}
