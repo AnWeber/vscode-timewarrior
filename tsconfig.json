@@ -4,6 +4,7 @@
 		"target": "es2019",
 		"lib": ["ES2019"],
 		"outDir": "dist",
+		"esModuleInterop": true,
 		"sourceMap": true,
 		"rootDir": "src",
 		"strict": true,
