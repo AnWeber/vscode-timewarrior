@@ -14,6 +14,7 @@ export class StatusBarItemProvider extends DisposeProvider {
 
     dataFileEvent(async e => {
       statusBarItem.hide();
+      statusBarItem.command = 'timewarrior.start';
       const dataFile = e.find(obj => obj.isActive);
       if (dataFile) {
         const intervals = await dataFile.getIntervals();

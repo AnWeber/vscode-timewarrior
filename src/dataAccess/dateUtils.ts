@@ -26,4 +26,11 @@ export function formatDuration(time: number) {
   return dayjs.duration(time).format('HH:mm');
 }
 
+export function isToday(date: Date) {
+    const today = new Date()
+  return date.getDate() === today.getDate() &&
+  date.getMonth() === today.getMonth() &&
+  date.getFullYear() === today.getFullYear();
+}
+
 export const DateTimeMinValue = new Date(0);

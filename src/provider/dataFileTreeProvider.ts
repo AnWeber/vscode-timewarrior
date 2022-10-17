@@ -7,22 +7,28 @@ export class DataFileTreeProvider
   implements vscode.TreeDataProvider<DataFile | Interval | DateIntervals>
 {
   public onDidChangeTreeData: vscode.Event<void>;
+  #onDidChangeTreeDataEmitter = new vscode.EventEmitter<void>()
 
   private dataFiles: Array<DataFile> | undefined;
-  constructor(public readonly dataFileEvent: vscode.Event<Array<DataFile>>) {
+  constructor(private readonly dataFileEvent: vscode.Event<Array<DataFile>>) {
     super();
 
-    const onDidChangeTreeDataEmitter = new vscode.EventEmitter<void>();
-    this.onDidChangeTreeData = onDidChangeTreeDataEmitter.event;
+    this.#onDidChangeTreeDataEmitter = new vscode.EventEmitter<void>();
+    this.onDidChangeTreeData = this.#onDidChangeTreeDataEmitter.event;
 
     this.subscriptions = [
       dataFileEvent(dataFiles => {
         this.dataFiles = dataFiles;
-        onDidChangeTreeDataEmitter.fire();
+        this.#onDidChangeTreeDataEmitter.fire();
       }),
-      onDidChangeTreeDataEmitter,
+      this.#onDidChangeTreeDataEmitter,
+      vscode.commands.registerCommand('timewarrior.refreshHistory', this.refresh, this),
       vscode.window.registerTreeDataProvider('timewarrior_history', this),
     ];
+  }
+
+  public refresh() {
+    this.#onDidChangeTreeDataEmitter.fire();
   }
 
   getTreeItem(element: DataFile | Interval | DateIntervals): vscode.TreeItem {
@@ -43,13 +49,14 @@ export class DataFileTreeProvider
     }
     if (element instanceof DataFile) {
       return (await element.getIntervals()).reduce((prev, curr) => {
-        const start = curr.start.toLocaleDateString();
-        const element = prev.find(group => group.start === start);
+        const key = curr.start.toLocaleDateString();
+        const element = prev.find(group => group.key === key);
         if (element) {
           element.intervals.push(curr);
         } else {
-          prev.push({
-            start,
+          prev.splice(0, 0, {
+            key,
+            start: curr.start,
             intervals: [curr],
           });
         }

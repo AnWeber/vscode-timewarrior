@@ -36,6 +36,41 @@
         }
     },
     "contributes": {
+        "commands": [
+            {
+                "command": "timewarrior.start",
+                "title": "timew start",
+                "category": "timewarrior",
+                "icon": "$(play-circle)"
+            },
+            {
+                "command": "timewarrior.stop",
+                "title": "timew stop",
+                "category": "timewarrior",
+                "icon": "$(stop-circle)"
+            },
+            {
+                "command": "timewarrior.refreshHistory",
+                "title": "timew refreshHistory",
+                "category": "timewarrior",
+                "icon": "$(refresh)"
+            }
+        ],
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "timewarrior.refreshHistory",
+                    "when": "false"
+                }
+            ],
+            "view/title": [
+                {
+                    "command": "timewarrior.refreshHistory",
+                    "when": "view == timewarrior_history",
+                    "group": "navigation"
+                }
+            ]
+        },
         "configuration": {
             "type": "object",
             "title": "Timewarrior",

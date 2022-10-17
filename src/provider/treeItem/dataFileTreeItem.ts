@@ -5,7 +5,11 @@ export class DataFileTreeItem extends vscode.TreeItem {
   constructor(element: DataFile) {
     super(getName(element));
     this.contextValue = 'dataFile';
-    this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+    if (element.isActive) {
+      this.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+    }else{
+      this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+    }
     this.iconPath = new vscode.ThemeIcon('checklist');
   }
 }

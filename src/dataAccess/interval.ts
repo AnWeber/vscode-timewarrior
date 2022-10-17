@@ -11,7 +11,7 @@ export class Interval {
         this.end = parseDate(match.groups.end);
       }
       if (match.groups.tags) {
-        this.tags.push(...match.groups.tags.trim().split(' '));
+        this.tags.push(...match.groups.tags.split(' ').map(tag => tag.trim().replace(/"/gu, '')));
       }
     }
   }
