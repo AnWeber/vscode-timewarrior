@@ -21,9 +21,6 @@ export class StatusBarItemProvider extends DisposeProvider {
           if (!prev?.start) {
             return curr;
           }
-          if (!curr?.start) {
-            return prev;
-          }
           return prev.start < curr.start ? curr : prev;
         }, undefined as Interval | undefined);
 
