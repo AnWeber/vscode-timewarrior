@@ -28,7 +28,6 @@
         "url": "https://github.com/AnWeber/vscode-timewarrior/issues"
     },
     "main": "./dist/extension.js",
-    "browser": "dist/browser.js",
     "capabilities": {
         "virtualWorkspaces": true,
         "untrustedWorkspaces": {
@@ -115,7 +114,6 @@
         "compile": "npm run esbuild -- --minify",
         "watch": "npm run esbuild -- --sourcemap --watch",
         "tsc-watch": "tsc --watch",
-        "esbuild-web": "esbuild ./src/browser.ts --bundle --outfile=dist/browser.js --platform=browser --format=cjs --external:vscode",
         "compile-web": "npm run esbuild-web -- --minify",
         "watch-web": "npm run esbuild-web -- --sourcemap --watch",
         "lockfile-lint": "lockfile-lint --path package-lock.json --validate-https --allowed-hosts npm --validate-checksum --validate-integrity",
