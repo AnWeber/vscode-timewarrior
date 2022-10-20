@@ -1,4 +1,4 @@
-import { DataFile, formatDate } from '../../dataAccess';
+import { DataFile, formatLocalDate } from '../../dataAccess';
 import * as vscode from 'vscode';
 
 export class DataFileTreeItem extends vscode.TreeItem {
@@ -16,7 +16,7 @@ export class DataFileTreeItem extends vscode.TreeItem {
 
 function getName(dataFile: DataFile) {
   if (dataFile.date.getFullYear() === (new Date()).getFullYear()) {
-    return formatDate(dataFile.date, 'MMMM');
+    return formatLocalDate(dataFile.date, 'MMMM');
   }
-  return formatDate(dataFile.date, 'MMMM (YYYYY)')
+  return formatLocalDate(dataFile.date, 'MMMM (YYYYY)')
 }
