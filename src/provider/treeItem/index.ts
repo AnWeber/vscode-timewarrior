@@ -1,3 +1,3 @@
 export * from './dataFileTreeItem';
-export * from './dateIntervalsreeItem';
+export * from './dateIntervalsTreeItem';
 export * from './intervalTreeItem';
