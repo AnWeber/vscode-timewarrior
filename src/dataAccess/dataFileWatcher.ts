@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { DisposeProvider } from './disposeProvider';
 import { DataFile } from './dataFile';
+import { homedir } from 'os';
 
 export class DataFileWatcher extends DisposeProvider {
   #dataFiles: Array<DataFile>;
@@ -11,10 +12,17 @@ export class DataFileWatcher extends DisposeProvider {
     super();
     this.#dataFiles = [];
     if (basePath) {
-      const relativePattern = new vscode.RelativePattern(basePath, 'data/*-*.data');
+      const relativePattern = new vscode.RelativePattern(this.getHomeBasePath(basePath), 'data/*-*.data');
       this.searchFiles(relativePattern);
       this.subscriptions.push(...[this.initFilesystemWatcher(relativePattern)]);
     }
+  }
+
+  private getHomeBasePath(basePath: string) {
+    if (basePath.startsWith('~')) {
+      return basePath.replace('~', homedir());
+    }
+    return basePath;
   }
 
   private async searchFiles(relativePattern: vscode.RelativePattern) {

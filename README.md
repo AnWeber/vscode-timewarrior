@@ -6,15 +6,14 @@
 
 * configure setting timewarrior.basePath
 
-
 ## Features
 
 * Timewarrior Sidebar
 * Statusbar with current Tag
-
-## Planned Features
 * command for `timew start` and `timew stop`
 * command for restart timew with prev tags
+
+## Planned Features
 * notfication for daily events
 * summary stats for tags and time
 

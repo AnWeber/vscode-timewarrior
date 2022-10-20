@@ -43,6 +43,24 @@
                 "icon": "$(play-circle)"
             },
             {
+                "command": "timewarrior.startNoTags",
+                "title": "timew start (with no tags)",
+                "category": "timewarrior",
+                "icon": "$(play-circle)"
+            },
+            {
+                "command": "timewarrior.tag",
+                "title": "timew tag",
+                "category": "timewarrior",
+                "icon": "$(tag)"
+            },
+            {
+                "command": "timewarrior.checkIn",
+                "title": "timew checkIn",
+                "category": "timewarrior",
+                "icon": "$(pinned)"
+            },
+            {
                 "command": "timewarrior.stop",
                 "title": "timew stop",
                 "category": "timewarrior",
@@ -67,6 +85,11 @@
                     "command": "timewarrior.refreshHistory",
                     "when": "view == timewarrior_history",
                     "group": "navigation"
+                },
+                {
+                    "command": "timewarrior.checkIn",
+                    "when": "view == timewarrior_history",
+                    "group": "navigation"
                 }
             ]
         },
@@ -78,7 +101,49 @@
                     "type": "string",
                     "scope": "application",
                     "description": "folder with timewarrior configuration",
-                    "default": "/home/andreas/.timewarrior"
+                    "default": "~/.timewarrior"
+                },
+                "timewarrior.tagStatusBarItem": {
+                    "type": "object",
+                    "scope": "application",
+                    "properties": {
+                        "errorOnEmptyTag": {
+                            "type": "boolean",
+                            "scope": "application",
+                            "description": "highlight missing Tag with error background",
+                            "default": true
+                        },
+                        "color":{
+                            "type": "string",
+                            "scope": "application",
+                            "description": "color of StatusBarItem",
+                            "default": true
+                        }
+                    },
+                    "description": "settings for Status Bar Item",
+                    "default": {
+                        "errorOnEmptyTag": true
+                    }
+                },
+                "timewarrior.checkIn": {
+                    "type": "object",
+                    "scope": "application",
+                    "properties": {
+                        "tags": {
+                            "type": "array",
+                            "scope": "application",
+                            "description": "list of tags always visible in checkIn Command",
+                            "items": {
+                                "type": "string",
+                                "scope": "application",
+                                "description": "tags to use"
+                            }
+                        }
+                    },
+                    "description": "settings for CheckInCommand",
+                    "default": {
+                        "errorOnEmptyTag": true
+                    }
                 }
             }
         },
