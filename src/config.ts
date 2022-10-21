@@ -15,6 +15,7 @@ interface TimewarriorConfiguration {
   } | undefined;
   get(section: 'checkIn'): {
     tags: Array<string>,
+    countRecentlyUsedTags: number,
   } | undefined;
 
   get(section: StringTypes): string | undefined;

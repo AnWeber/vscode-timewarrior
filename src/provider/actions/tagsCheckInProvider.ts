@@ -1,8 +1,10 @@
+import { getConfig } from '../../config';
 import { DataFile } from '../../dataAccess';
 import { CheckInAction } from './checkInAction';
 
 export async function tagsCheckInProvider(dataFile: DataFile | undefined): Promise<Array<CheckInAction>> {
-  const tagList = await getRecentlyUsedTags(dataFile);
+  const countRecentlyUsedTags = getConfig().get('checkIn')?.countRecentlyUsedTags || 5;
+  const tagList = await getRecentlyUsedTags(dataFile, countRecentlyUsedTags);
   return tagList.map(obj => ({
     label: obj.join(' '),
     command: 'start',
@@ -10,7 +12,7 @@ export async function tagsCheckInProvider(dataFile: DataFile | undefined): Promi
   }));
 }
 
-async function getRecentlyUsedTags(dataFile: DataFile | undefined, count = 3) {
+async function getRecentlyUsedTags(dataFile: DataFile | undefined, count: number) {
   if (dataFile) {
     const intervals = await dataFile.getIntervals();
 
@@ -21,7 +23,7 @@ async function getRecentlyUsedTags(dataFile: DataFile | undefined, count = 3) {
         }
       }
       return prev;
-    }, [] as Array<Array<string>>);
+    }, [] as Array<Array<string>>).sort();
   }
   return [];
 }

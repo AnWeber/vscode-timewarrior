@@ -138,11 +138,16 @@
                                 "scope": "application",
                                 "description": "tags to use"
                             }
+                        },
+                        "countRecentlyUsedTags":{
+                            "type": "number",
+                            "scope": "application",
+                            "description": "number of visible recently used tags"
                         }
                     },
                     "description": "settings for CheckInCommand",
                     "default": {
-                        "errorOnEmptyTag": true
+                        "countRecentlyUsedTags": 5
                     }
                 }
             }
