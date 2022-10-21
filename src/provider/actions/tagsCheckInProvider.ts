@@ -12,18 +12,18 @@ export async function tagsCheckInProvider(dataFile: DataFile | undefined): Promi
   }));
 }
 
-async function getRecentlyUsedTags(dataFile: DataFile | undefined, count: number) {
+export async function getRecentlyUsedTags(dataFile: DataFile | undefined, count: number) {
   if (dataFile) {
     const intervals = await dataFile.getIntervals();
 
-    return intervals.reduce((prev, curr) => {
+    return intervals.reverse().reduce((prev, curr) => {
       if (prev.length < count) {
         if (curr.tags.length > 0) {
           prev.push([...curr.tags]);
         }
       }
       return prev;
-    }, [] as Array<Array<string>>).sort();
+    }, [] as Array<Array<string>>);
   }
   return [];
 }

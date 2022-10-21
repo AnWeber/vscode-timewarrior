@@ -22,3 +22,7 @@ export async function spawn(command: string, args?: string[], options?: SpawnOpt
     });
   });
 }
+
+export async function timew(command: string, args?: string[]): Promise<{ stdout: string; stderr: string }> {
+  return spawn('timew', [command, ...(args || [])]);
+}

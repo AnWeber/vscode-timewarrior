@@ -49,6 +49,12 @@
                 "icon": "$(play-circle)"
             },
             {
+                "command": "timewarrior.startPrevTag",
+                "title": "timew start (with previous tag)",
+                "category": "timewarrior",
+                "icon": "$(play-circle)"
+            },
+            {
                 "command": "timewarrior.tag",
                 "title": "timew tag",
                 "category": "timewarrior",

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { DataFile, DisposeProvider, spawn } from '../dataAccess';
+import { DataFile, DisposeProvider, timew } from '../dataAccess';
 import * as actions from './actions';
 
 export class CommandsProvider extends DisposeProvider {
@@ -13,6 +13,7 @@ export class CommandsProvider extends DisposeProvider {
     this.subscriptions = [
       vscode.commands.registerCommand('timewarrior.start', this.start, this),
       vscode.commands.registerCommand('timewarrior.startNoTags', this.startNoTags, this),
+      vscode.commands.registerCommand('timewarrior.startPrevTag', this.startPrevTag, this),
       vscode.commands.registerCommand('timewarrior.tag', this.tag, this),
       vscode.commands.registerCommand('timewarrior.stop', this.stop, this),
       vscode.commands.registerCommand('timewarrior.checkIn', this.checkIn, this),
@@ -20,24 +21,36 @@ export class CommandsProvider extends DisposeProvider {
   }
 
   private async startNoTags(...args: string[]) {
-    await spawn('start', args);
+    await timew('start', args);
   }
   private async start() {
     const tags = await actions.getInputArgs(this.#activeDataFile);
     if (tags) {
-      await spawn('start', tags);
+      await timew('start', tags);
+    }
+  }
+  private async startPrevTag() {
+    if (this.#activeDataFile) {
+      const intervals = await this.#activeDataFile.getIntervals();
+      if (intervals.length > 1) {
+        intervals.pop();
+        const prevTag = intervals.pop();
+        if (prevTag?.tags) {
+          await timew('start', prevTag.tags);
+        }
+      }
     }
   }
 
   private async tag() {
     const tags = await actions.getInputArgs(this.#activeDataFile);
     if (tags) {
-      await spawn('tag', tags);
+      await timew('tag', tags);
     }
   }
 
   private async stop() {
-    await spawn('stop');
+    await timew('stop');
   }
 
   private async checkIn() {
@@ -52,7 +65,7 @@ export class CommandsProvider extends DisposeProvider {
       if (result.args && !Array.isArray(result.args)) {
         result.args = await result.args();
       }
-      await await spawn(result.command, result.args);
+      await await timew(result.command, result.args);
     }
   }
 
@@ -69,6 +82,6 @@ export class CommandsProvider extends DisposeProvider {
     for (const actionProvider of actionProviders) {
       result.push(...(await actionProvider(this.#activeDataFile)));
     }
-    return result;
+    return result.sort((obj1, obj2) => obj1.label.localeCompare(obj2.label));
   }
 }
