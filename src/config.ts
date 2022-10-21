@@ -14,8 +14,9 @@ interface TimewarriorConfiguration {
     color: string
   } | undefined;
   get(section: 'checkIn'): {
-    tags: Array<string>,
-    countRecentlyUsedTags: number,
+    tags?: Array<string>,
+    countRecentlyUsedTags?: number,
+    gitTagRegex?: Array<string>
   } | undefined;
 
   get(section: StringTypes): string | undefined;

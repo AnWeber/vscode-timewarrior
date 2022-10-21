@@ -1,9 +1,6 @@
-import { spawnSync } from 'child_process';
 import * as vscode from 'vscode';
-import { DataFile, DisposeProvider } from '../dataAccess';
+import { DataFile, DisposeProvider, spawn } from '../dataAccess';
 import * as actions from './actions';
-
-
 
 export class CommandsProvider extends DisposeProvider {
   #activeDataFile: DataFile | undefined;
@@ -23,24 +20,24 @@ export class CommandsProvider extends DisposeProvider {
   }
 
   private async startNoTags(...args: string[]) {
-    this.spawn('start', args);
+    await spawn('start', args);
   }
   private async start() {
     const tags = await actions.getInputArgs(this.#activeDataFile);
     if (tags) {
-      this.spawn('start', tags);
+      await spawn('start', tags);
     }
   }
 
   private async tag() {
     const tags = await actions.getInputArgs(this.#activeDataFile);
     if (tags) {
-      this.spawn('tag', tags);
+      await spawn('tag', tags);
     }
   }
 
   private async stop() {
-    this.spawn('stop');
+    await spawn('stop');
   }
 
   private async checkIn() {
@@ -55,7 +52,7 @@ export class CommandsProvider extends DisposeProvider {
       if (result.args && !Array.isArray(result.args)) {
         result.args = await result.args();
       }
-      await this.spawn(result.command, result.args);
+      await await spawn(result.command, result.args);
     }
   }
 
@@ -66,31 +63,12 @@ export class CommandsProvider extends DisposeProvider {
       actions.startCheckInProvider,
       actions.tagsCheckInProvider,
       actions.configTagsCheckInProvider,
-      actions.stopCheckInProvider
+      actions.gitCheckInProvider,
+      actions.stopCheckInProvider,
     ];
     for (const actionProvider of actionProviders) {
-      result.push(...await actionProvider(this.#activeDataFile));
+      result.push(...(await actionProvider(this.#activeDataFile)));
     }
     return result;
-  }
-
-
-
-  private spawn(command: string, args: string[] = []): { stdout: string; stderr: string } {
-    const result = spawnSync('timew', [command, ...args], {
-      encoding: 'utf-8',
-    });
-
-    if (result.error) {
-      throw result.error;
-    }
-    if (result.status === null) {
-      throw new Error(`Terminated by signal ${result.signal}`);
-    }
-    if (result.status > 0) {
-      throw new Error(result.stderr);
-    }
-
-    return { stdout: result.stdout, stderr: result.stderr };
   }
 }

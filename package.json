@@ -143,6 +143,16 @@
                             "type": "number",
                             "scope": "application",
                             "description": "number of visible recently used tags"
+                        },
+                        "gitTagRegex":{
+                            "type": "array",
+                            "scope": "application",
+                            "description": "list of regex to get tag from git branch",
+                            "items": {
+                                "type": "string",
+                                "scope": "application",
+                                "description": "regex to filter branch (e.g. .*(?<tag>JIRA-[0-9]*).*"
+                            }
                         }
                     },
                     "description": "settings for CheckInCommand",
