@@ -1,4 +1,4 @@
-import { DataFile, formatLocalDate } from '../../dataAccess';
+import { DataFile } from '../../dataAccess';
 import * as vscode from 'vscode';
 
 export class DataFileTreeItem extends vscode.TreeItem {
@@ -15,8 +15,9 @@ export class DataFileTreeItem extends vscode.TreeItem {
 }
 
 function getName(dataFile: DataFile) {
+  const month = dataFile.date.toLocaleString('default', { month: 'long' });
   if (dataFile.date.getFullYear() === (new Date()).getFullYear()) {
-    return formatLocalDate(dataFile.date, 'MMMM');
+    return month;
   }
-  return formatLocalDate(dataFile.date, 'MMMM (YYYYY)')
+  return `${month} (${dataFile.date.getFullYear()})`
 }

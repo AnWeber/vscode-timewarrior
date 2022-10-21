@@ -1,4 +1,4 @@
-import { formatLocalDate, formatDuration, Interval } from '../../dataAccess';
+import { formatDuration, Interval } from '../../dataAccess';
 import * as vscode from 'vscode';
 
 export class IntervalTreeItem extends vscode.TreeItem {
@@ -13,9 +13,9 @@ export class IntervalTreeItem extends vscode.TreeItem {
 
   private formatInterval(interval: Interval) {
     const result: Array<string> = [];
-    result.push(formatLocalDate(interval.start, 'HH:mm'));
+    result.push(interval.start.toLocaleTimeString());
     if (interval.end) {
-      result.push(formatLocalDate(interval.end, 'HH:mm'));
+      result.push(interval.end.toLocaleTimeString());
     }
     return result.join(' - ');
   }
