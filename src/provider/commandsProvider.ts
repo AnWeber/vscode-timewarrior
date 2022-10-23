@@ -7,10 +7,11 @@ export class CommandsProvider extends DisposeProvider {
   constructor(private readonly dataFileEvent: vscode.Event<Array<DataFile>>) {
     super();
 
-    dataFileEvent(dataFiles => {
-      this.#activeDataFile = dataFiles.find(obj => obj.isActive);
-    });
+
     this.subscriptions = [
+      dataFileEvent(dataFiles => {
+        this.#activeDataFile = dataFiles.find(obj => obj.isActive);
+      }),
       vscode.commands.registerCommand('timewarrior.start', this.start, this),
       vscode.commands.registerCommand('timewarrior.startNoTags', this.startNoTags, this),
       vscode.commands.registerCommand('timewarrior.startPrevTag', this.startPrevTag, this),

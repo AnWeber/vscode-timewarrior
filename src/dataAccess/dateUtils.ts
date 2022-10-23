@@ -8,8 +8,14 @@ dayjs.extend(duration);
 
 export function parseDate(date: string | undefined, format = 'YYYYMMDDTHHmmssZ') {
   if (date) {
-    const obj = dayjs;
-    return obj.utc(date, format).toDate();
+    return dayjs.utc(date, format).toDate();
+  }
+  return undefined;
+}
+
+export function parseLocalDate(date: string | undefined, format?: string) {
+  if (date) {
+    return dayjs(date, format).toDate();
   }
   return undefined;
 }

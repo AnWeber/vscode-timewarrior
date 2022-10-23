@@ -77,12 +77,22 @@
                 "title": "timew refreshHistory",
                 "category": "timewarrior",
                 "icon": "$(refresh)"
+            },
+            {
+                "command": "timewarrior.ignoreTimeBasedInterval",
+                "title": "timew ignoreTimeBasedInterval",
+                "category": "timewarrior",
+                "icon": "$(check)"
             }
         ],
         "menus": {
             "commandPalette": [
                 {
                     "command": "timewarrior.refreshHistory",
+                    "when": "false"
+                },
+                {
+                    "command": "timewarrior.ignoreTimeBasedInterval",
                     "when": "false"
                 }
             ],
@@ -119,7 +129,7 @@
                             "description": "highlight missing Tag with error background",
                             "default": true
                         },
-                        "color":{
+                        "color": {
                             "type": "string",
                             "scope": "application",
                             "description": "color of StatusBarItem",
@@ -145,12 +155,12 @@
                                 "description": "tags to use"
                             }
                         },
-                        "countRecentlyUsedTags":{
+                        "countRecentlyUsedTags": {
                             "type": "number",
                             "scope": "application",
                             "description": "number of visible recently used tags"
                         },
-                        "gitTagRegex":{
+                        "gitTagRegex": {
                             "type": "array",
                             "scope": "application",
                             "description": "list of regex to get tag from git branch",
@@ -165,6 +175,86 @@
                     "default": {
                         "countRecentlyUsedTags": 5
                     }
+                },
+                "timewarrior.reminders": {
+                    "type": "object",
+                    "description": "time based checkin",
+                    "properties": {
+                        "intervalTimeSpan": {
+                            "type": "number",
+                            "scope": "application",
+                            "description": "interval duration",
+                            "default": 30
+                        },
+                        "preventNewReminderTimeSpan": {
+                            "type": "number",
+                            "scope": "application",
+                            "description": "prevent display of reminder, if tag changed in last ... seconds",
+                            "default": 120
+                        },
+                        "ranges": {
+                            "type": "array",
+                            "scope": "application",
+                            "items": {
+                                "type": "object",
+                                "scope": "application",
+                                "description": "time period definition",
+                                "properties": {
+                                    "startTime": {
+                                        "type": "string",
+                                        "scope": "application",
+                                        "description": "start time to switch to tags (e.g. 09:30)"
+                                    },
+                                    "endTime": {
+                                        "type": "string",
+                                        "scope": "application",
+                                        "description": "end time to switch back to previous tag (e.g. 10:00)"
+                                    },
+                                    "daysToRepeat": {
+                                        "type": "number",
+                                        "scope": "application",
+                                        "description": "number of days to repeat the interval",
+                                        "default": 1
+                                    },
+                                    "daysToRepeatDate": {
+                                        "type": "string",
+                                        "scope": "application",
+                                        "description": "date from which days to repeat are counted"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "scope": "application",
+                                        "description": "message used in StatusBarItem"
+                                    },
+                                    "showStatusBarDuration": {
+                                        "type": "number",
+                                        "scope": "application",
+                                        "description": "Duration for the display of the status bar"
+                                    },
+                                    "force": {
+                                        "type": "boolean",
+                                        "scope": "application",
+                                        "description": "perform auto checkIn"
+                                    },
+                                    "tags": {
+                                        "type": "array",
+                                        "scope": "application",
+                                        "description": "list of tags to use",
+                                        "items": {
+                                            "type": "string",
+                                            "scope": "application",
+                                            "description": "tags to use"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "default": {
+                    "intervals": [],
+                    "preventReminderTimeSpan": 120,
+                    "intervalTimeSpan": 30
                 }
             }
         },
