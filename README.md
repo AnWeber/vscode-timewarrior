@@ -1,6 +1,9 @@
+<p align="center">
+<img src="https://github.com/AnWeber/vscode-timewarrior/raw/main/icon.png" alt="Timewarrior" />
+</p>
 # timewarrior
 
-[Timewarrior](https://timewarrior.net/docs/) integration in vscode
+[Timewarrior](https://timewarrior.net/docs/) integration in VSCode
 
 ## Usage
 
@@ -12,13 +15,11 @@
 * Statusbar with current Tag
 * command for `timew start` and `timew stop`
 * command for restart timew with prev tags
-
-## Planned Features
-* notfication for daily events
-* summary stats for tags and time
+* reminder for configurable ranges
 
 ## Ideas
 * interactive editor for *.data file
+* summary stats for tags and time
 
 
 ## License
