@@ -1,6 +1,11 @@
-import { spawn as spawnProcess , SpawnOptionsWithoutStdio} from 'child_process';
+import { spawn as spawnProcess, SpawnOptionsWithoutStdio } from 'child_process';
+import { platform } from 'os';
 
-export async function spawn(command: string, args?: string[], options?: SpawnOptionsWithoutStdio): Promise<{ stdout: string; stderr: string }> {
+export async function spawn(
+  command: string,
+  args?: string[],
+  options?: SpawnOptionsWithoutStdio
+): Promise<{ stdout: string; stderr: string }> {
   return new Promise((resolve, reject) => {
     const process = spawnProcess(command, args, options);
     const stdout: Array<string> = [];
@@ -24,5 +29,8 @@ export async function spawn(command: string, args?: string[], options?: SpawnOpt
 }
 
 export async function timew(command: string, args?: string[]): Promise<{ stdout: string; stderr: string }> {
+  if (platform() === 'win32') {
+    return spawn('wsl', [`timew ${command}`, ...(args || [])]);
+  }
   return spawn('timew', [command, ...(args || [])]);
 }
