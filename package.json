@@ -2,7 +2,7 @@
     "name": "timewarrior",
     "displayName": "timewarrior",
     "description": "add timewarrior commands",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "publisher": "anweber",
     "license": "ISC",
     "engines": {
@@ -38,51 +38,57 @@
         "commands": [
             {
                 "command": "timewarrior.start",
-                "title": "timew start",
+                "title": "Timewarrior start",
                 "category": "timewarrior",
                 "icon": "$(play-circle)"
             },
             {
                 "command": "timewarrior.startNoTags",
-                "title": "timew start (with no tags)",
+                "title": "Timewarrior start (with no tags)",
                 "category": "timewarrior",
                 "icon": "$(play-circle)"
             },
             {
                 "command": "timewarrior.startPrevTag",
-                "title": "timew start (with previous tag)",
+                "title": "Timewarrior start (with previous tag)",
                 "category": "timewarrior",
                 "icon": "$(play-circle)"
             },
             {
                 "command": "timewarrior.tag",
-                "title": "timew tag",
+                "title": "Timewarrior tag",
                 "category": "timewarrior",
                 "icon": "$(tag)"
             },
             {
                 "command": "timewarrior.checkIn",
-                "title": "timew checkIn",
+                "title": "Timewarrior checkIn",
                 "category": "timewarrior",
                 "icon": "$(pinned)"
             },
             {
                 "command": "timewarrior.stop",
-                "title": "timew stop",
+                "title": "Timewarrior stop",
                 "category": "timewarrior",
                 "icon": "$(stop-circle)"
             },
             {
                 "command": "timewarrior.refreshHistory",
-                "title": "timew refreshHistory",
+                "title": "Timewarrior refreshHistory",
                 "category": "timewarrior",
                 "icon": "$(refresh)"
             },
             {
                 "command": "timewarrior.ignoreTimeBasedInterval",
-                "title": "timew ignoreTimeBasedInterval",
+                "title": "Timewarrior ignoreTimeBasedInterval",
                 "category": "timewarrior",
                 "icon": "$(check)"
+            },
+            {
+                "command": "timewarrior.edit",
+                "title": "Timewarrior edit",
+                "category": "timewarrior",
+                "icon": "$(edit)"
             }
         ],
         "menus": {
@@ -306,12 +312,12 @@
         ]
     },
     "devDependencies": {
-        "@types/node": "^18.8.5",
+        "@types/node": "^18.11.7",
         "@types/vscode": "^1.72.0",
-        "@typescript-eslint/eslint-plugin": "5.40.0",
-        "@typescript-eslint/parser": "5.40.0",
-        "esbuild": "^0.15.10",
-        "eslint": "^8.25.0",
+        "@typescript-eslint/eslint-plugin": "5.41.0",
+        "@typescript-eslint/parser": "5.41.0",
+        "esbuild": "^0.15.12",
+        "eslint": "^8.26.0",
         "eslint-config-prettier": "^8.5.0",
         "husky": "^8.0.1",
         "lint-staged": "^13.0.3",
@@ -320,6 +326,6 @@
         "typescript": "^4.8.4"
     },
     "dependencies": {
-        "dayjs": "^1.11.5"
+        "dayjs": "^1.11.6"
     }
 }

@@ -7,7 +7,6 @@ export class CommandsProvider extends DisposeProvider {
   constructor(private readonly dataFileEvent: vscode.Event<Array<DataFile>>) {
     super();
 
-
     this.subscriptions = [
       dataFileEvent(dataFiles => {
         this.#activeDataFile = dataFiles.find(obj => obj.isActive);
@@ -18,6 +17,7 @@ export class CommandsProvider extends DisposeProvider {
       vscode.commands.registerCommand('timewarrior.tag', this.tag, this),
       vscode.commands.registerCommand('timewarrior.stop', this.stop, this),
       vscode.commands.registerCommand('timewarrior.checkIn', this.checkIn, this),
+      vscode.commands.registerCommand('timewarrior.edit', this.edit, this),
     ];
   }
 
@@ -84,5 +84,13 @@ export class CommandsProvider extends DisposeProvider {
       result.push(...(await actionProvider(this.#activeDataFile)));
     }
     return result.sort((obj1, obj2) => obj1.label.localeCompare(obj2.label));
+  }
+
+  private async edit(): Promise<void> {
+    if (this.#activeDataFile) {
+      const uri = this.#activeDataFile.uri;
+      const document = await vscode.workspace.openTextDocument(uri);
+      await vscode.window.showTextDocument(document);
+    }
   }
 }
