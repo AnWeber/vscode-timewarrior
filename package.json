@@ -2,7 +2,7 @@
     "name": "timewarrior",
     "displayName": "timewarrior",
     "description": "add timewarrior commands",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "publisher": "anweber",
     "license": "ISC",
     "engines": {
@@ -294,7 +294,7 @@
         "vscode:prepublish": "npm run compile",
         "esbuild": "esbuild ./src/extension.ts --bundle --outdir=dist/ --sourcemap --platform=node --external:vscode --format=cjs",
         "compile": "npm run esbuild -- --minify",
-        "watch": "npm run esbuild -- --sourcemap --watch",
+        "start": "npm run esbuild -- --sourcemap --watch",
         "tsc-watch": "tsc --watch",
         "lockfile-lint": "lockfile-lint --path package-lock.json --validate-https --allowed-hosts npm --validate-checksum --validate-integrity",
         "eslint": "eslint src --ext ts",
@@ -312,20 +312,20 @@
         ]
     },
     "devDependencies": {
-        "@types/node": "^18.11.7",
+        "@types/node": "^18.15.11",
         "@types/vscode": "^1.72.0",
-        "@typescript-eslint/eslint-plugin": "5.41.0",
-        "@typescript-eslint/parser": "5.41.0",
-        "esbuild": "^0.15.12",
-        "eslint": "^8.26.0",
-        "eslint-config-prettier": "^8.5.0",
-        "husky": "^8.0.1",
-        "lint-staged": "^13.0.3",
-        "lockfile-lint": "^4.9.6",
-        "prettier": "^2.7.1",
-        "typescript": "^4.8.4"
+        "@typescript-eslint/eslint-plugin": "5.57.1",
+        "@typescript-eslint/parser": "5.57.1",
+        "esbuild": "^0.17.15",
+        "eslint": "^8.37.0",
+        "eslint-config-prettier": "^8.8.0",
+        "husky": "^8.0.3",
+        "lint-staged": "^13.2.0",
+        "lockfile-lint": "^4.10.1",
+        "prettier": "^2.8.7",
+        "typescript": "^5.0.3"
     },
     "dependencies": {
-        "dayjs": "^1.11.6"
+        "dayjs": "^1.11.7"
     }
 }

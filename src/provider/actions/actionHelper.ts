@@ -5,10 +5,10 @@ export async function getInputArgs(dataFile: DataFile | undefined) {
   const result = await vscode.window.showInputBox({
     placeHolder: 'tags',
     value: (await getLastTags(dataFile))?.join(', '),
-    prompt: 'Please provide tags separated with whitespace.',
+    prompt: 'Please provide tags separated with comma.',
   });
   if (result) {
-    return result.split(' ').map(tag => tag.trim());
+    return result.split(',').map(tag => tag.trim());
   }
   return undefined;
 }

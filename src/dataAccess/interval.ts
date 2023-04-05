@@ -11,11 +11,14 @@ export class Interval {
         this.end = parseDate(match.groups.end);
       }
       if (match.groups.tags) {
-        this.tags.push(...match.groups.tags.split(' ').map(tag => tag.trim().replace(/"/gu, '')));
+        const regex = /(?:[^\s"]+|"[^"]*")+/giu;
+        let tagMatch: RegExpExecArray | null;
+        while ((tagMatch = regex.exec(match.groups.tags)) !== null) {
+          this.tags.push(tagMatch[0].replace(/"/gu, ''));
+        }
       }
     }
   }
-
 
   public get fileFormat() {
     const result: Array<string> = [];
@@ -28,7 +31,16 @@ export class Interval {
     }
     if (this.tags.length > 0) {
       result.push(' # ');
-      result.push(this.tags.join(' '));
+      result.push(
+        this.tags
+          .map(obj => {
+            if (obj.indexOf(' ') > 0) {
+              return `"${obj}"`;
+            }
+            return obj;
+          })
+          .join(' ')
+      );
     }
     return result.join('');
   }

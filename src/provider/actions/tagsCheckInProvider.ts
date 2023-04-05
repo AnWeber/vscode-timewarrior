@@ -5,25 +5,32 @@ import { CheckInAction } from './checkInAction';
 export async function tagsCheckInProvider(dataFile: DataFile | undefined): Promise<Array<CheckInAction>> {
   const countRecentlyUsedTags = getConfig().get('checkIn')?.countRecentlyUsedTags || 5;
   const tagList = await getRecentlyUsedTags(dataFile, countRecentlyUsedTags);
-  return tagList.map(obj => ({
-    label: obj.join(' '),
+  return tagList.map(tag => ({
+    label: tag.join(', '),
     command: 'start',
-    args: obj,
+    args: tag,
   }));
 }
 
 export async function getRecentlyUsedTags(dataFile: DataFile | undefined, count: number) {
+  const result: Array<Array<string>> = [];
   if (dataFile) {
     const intervals = await dataFile.getIntervals();
 
-    return intervals.reverse().reduce((prev, curr) => {
-      if (prev.length < count) {
-        if (curr.tags.length > 0) {
-          prev.push([...curr.tags]);
-        }
+    for (const interval of intervals.reverse()) {
+      if (interval.tags.length > 0 && !result.some(tags => equalsArray(tags, interval.tags))) {
+        result.push([...interval.tags]);
       }
-      return prev;
-    }, [] as Array<Array<string>>);
+      if (result.length >= count) {
+        return result;
+      }
+    }
   }
-  return [];
+  return result;
+}
+function equalsArray<T>(arr1: T[], arr2: T[]): boolean {
+  if (arr1.length === arr2.length) {
+    return arr1.every(obj1 => arr2.includes(obj1));
+  }
+  return false;
 }

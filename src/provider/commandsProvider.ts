@@ -57,7 +57,7 @@ export class CommandsProvider extends DisposeProvider {
   private async checkIn() {
     const actions = await this.getActions();
     const result =
-      actions.length > 0
+      actions.length > 1
         ? await vscode.window.showQuickPick(actions, {
             placeHolder: 'Please select action',
           })

@@ -1,3 +1,7 @@
+## v0.7.0
+
+- fix error with tags using Whitespace (#1)
+
 ## v0.6.0
 
 - added `timewarrior.edit` command
