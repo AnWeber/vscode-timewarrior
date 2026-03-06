@@ -16,7 +16,7 @@ export class ReminderProvider extends DisposeProvider {
 
   #activeDataFile: DataFile | undefined;
   #tagsLastChanged: Date;
-  #timer: NodeJS.Timer | undefined;
+  #timer: NodeJS.Timeout | undefined;
   #currentInterval: PreparedReminderRange | undefined;
   constructor(dataFileEvent: vscode.Event<Array<DataFile>>) {
     super();

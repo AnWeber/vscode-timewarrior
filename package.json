@@ -89,6 +89,29 @@
                 "title": "Timewarrior edit",
                 "category": "timewarrior",
                 "icon": "$(edit)"
+            },
+            {
+                "command": "timewarrior.monthSummary",
+                "title": "Timewarrior month summary",
+                "category": "timewarrior",
+                "icon": "$(graph)"
+            },
+            {
+                "command": "timewarrior.dayEditor",
+                "title": "Timewarrior day editor",
+                "category": "timewarrior",
+                "icon": "$(edit)"
+            },
+            {
+                "command": "timewarrior.editToday",
+                "title": "Timewarrior edit today",
+                "category": "timewarrior",
+                "icon": "$(edit)"
+            },
+            {
+                "command": "timewarrior.refreshToday",
+                "title": "Timewarrior refreshToday",
+                "category": "timewarrior"
             }
         ],
         "menus": {
@@ -99,6 +122,10 @@
                 },
                 {
                     "command": "timewarrior.ignoreTimeBasedInterval",
+                    "when": "false"
+                },
+                {
+                    "command": "timewarrior.refreshToday",
                     "when": "false"
                 }
             ],
@@ -112,6 +139,28 @@
                     "command": "timewarrior.checkIn",
                     "when": "view == timewarrior_history",
                     "group": "navigation"
+                },
+                {
+                    "command": "timewarrior.editToday",
+                    "when": "view == timewarrior_today",
+                    "group": "navigation"
+                },
+                {
+                    "command": "timewarrior.checkIn",
+                    "when": "view == timewarrior_today",
+                    "group": "navigation"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "timewarrior.monthSummary",
+                    "when": "view == timewarrior_history && viewItem == dataFile",
+                    "group": "inline"
+                },
+                {
+                    "command": "timewarrior.dayEditor",
+                    "when": "view == timewarrior_history && viewItem == date",
+                    "group": "inline"
                 }
             ]
         },
@@ -268,6 +317,10 @@
             {
                 "view": "timewarrior_history",
                 "contents": "no timewarrior history"
+            },
+            {
+                "view": "timewarrior_today",
+                "contents": "no timewarrior entries for today"
             }
         ],
         "viewsContainers": {
@@ -281,6 +334,11 @@
         },
         "views": {
             "timewarrior-views": [
+                {
+                    "id": "timewarrior_today",
+                    "name": "Today",
+                    "visibility": "visible"
+                },
                 {
                     "id": "timewarrior_history",
                     "name": "History",
@@ -300,7 +358,8 @@
         "eslint": "eslint src --ext ts",
         "lint": "npm run format && npm run eslint && npm run lockfile-lint && tsc --noEmit",
         "prepare": "husky install",
-        "package": "npx vsce package"
+        "package": "npx @vscode/vsce package",
+        "package:local": "npm run compile && npm run package"
     },
     "lint-staged": {
         "*.js": [
@@ -320,7 +379,7 @@
         "eslint": "^8.37.0",
         "eslint-config-prettier": "^8.8.0",
         "husky": "^8.0.3",
-        "lint-staged": "^13.2.0",
+        "lint-staged": "^13.3.0",
         "lockfile-lint": "^4.10.1",
         "prettier": "^2.8.7",
         "typescript": "^5.0.3"

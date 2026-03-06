@@ -13,7 +13,10 @@ export class DataFileWatcher extends DisposeProvider {
     this.#dataFiles = [];
     if (basePath) {
       const relativePattern = new vscode.RelativePattern(this.getHomeBasePath(basePath), 'data/*-*.data');
-      this.searchFiles(relativePattern);
+      this.searchFiles(relativePattern).catch(err => {
+        const message = err instanceof Error ? err.message : `${err}`;
+        vscode.window.showErrorMessage(`timewarrior: failed to load data files (${message})`);
+      });
       this.subscriptions.push(...[this.initFilesystemWatcher(relativePattern)]);
     }
   }

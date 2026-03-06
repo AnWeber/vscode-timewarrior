@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 import { DataFile, DisposeProvider, Interval } from '../dataAccess';
-import { DateIntervals, DateIntervalsTreeItem, IntervalTreeItem, DataFileTreeItem } from './treeItem';
+import { DateIntervals, DateIntervalsTreeItem, IntervalTreeItem, DataFileTreeItem, YearGroup, YearTreeItem } from './treeItem';
 
 export class DataFileTreeProvider
   extends DisposeProvider
-  implements vscode.TreeDataProvider<DataFile | Interval | DateIntervals>
+  implements vscode.TreeDataProvider<DataFile | Interval | DateIntervals | YearGroup>
 {
   public onDidChangeTreeData: vscode.Event<void>;
   #onDidChangeTreeDataEmitter = new vscode.EventEmitter<void>()
@@ -31,41 +31,75 @@ export class DataFileTreeProvider
     this.#onDidChangeTreeDataEmitter.fire();
   }
 
-  getTreeItem(element: DataFile | Interval | DateIntervals): vscode.TreeItem {
+  getTreeItem(element: DataFile | Interval | DateIntervals | YearGroup): vscode.TreeItem {
     if (element instanceof DataFile) {
       return new DataFileTreeItem(element);
     }
     if (element instanceof Interval) {
       return new IntervalTreeItem(element);
     }
+    if (element instanceof YearGroup) {
+      return new YearTreeItem(element);
+    }
     return new DateIntervalsTreeItem(element);
   }
 
   async getChildren(
-    element?: DataFile | Interval | DateIntervals
-  ): Promise<Array<DataFile> | Array<Interval> | Array<DateIntervals> | undefined> {
+    element?: DataFile | Interval | DateIntervals | YearGroup
+  ): Promise<Array<DataFile | Interval | DateIntervals | YearGroup> | undefined> {
     if (!element) {
-      return this.dataFiles;
+      const dataFiles = (this.dataFiles || []).slice().sort((obj1, obj2) => obj2.date.getTime() - obj1.date.getTime());
+      const currentYear = new Date().getFullYear();
+      const topLevelDataFiles = dataFiles.filter(obj => obj.date.getFullYear() >= currentYear);
+      const previousYears = dataFiles.filter(obj => obj.date.getFullYear() < currentYear);
+
+      const grouped = previousYears.reduce((prev, curr) => {
+        const year = curr.date.getFullYear();
+        if (!prev[year]) {
+          prev[year] = [];
+        }
+        prev[year].push(curr);
+        return prev;
+      }, {} as Record<number, Array<DataFile>>);
+
+      const yearGroups = Object.entries(grouped)
+        .sort(([year1], [year2]) => Number(year2) - Number(year1))
+        .map(([year, files]) => new YearGroup(Number(year), files));
+
+      return [...topLevelDataFiles, ...yearGroups];
+    }
+    if (element instanceof YearGroup) {
+      return element.dataFiles
+        .slice()
+        .sort((obj1, obj2) => obj2.date.getTime() - obj1.date.getTime());
     }
     if (element instanceof DataFile) {
-      return (await element.getIntervals()).reduce((prev, curr) => {
+      const dataFile = element;
+      const intervals = (await element.getIntervals())
+        .slice()
+        .sort((obj1, obj2) => obj2.start.getTime() - obj1.start.getTime());
+
+      return intervals.reduce((prev, curr) => {
         const key = curr.start.toLocaleDateString();
-        const element = prev.find(group => group.key === key);
-        if (element) {
-          element.intervals.push(curr);
+        const group = prev.find(obj => obj.key === key);
+        if (group) {
+          group.intervals.push(curr);
         } else {
-          prev.splice(0, 0, {
+          prev.push({
             key,
             start: curr.start,
             intervals: [curr],
+            dataFile,
           });
         }
         return prev;
-      }, [] as Array<DateIntervals>);
+      }, [] as Array<DateIntervals>).sort((obj1, obj2) => obj2.start.getTime() - obj1.start.getTime());
     }
     if (element instanceof Interval) {
       return undefined;
     }
-    return element.intervals;
+    return element.intervals
+      .slice()
+      .sort((obj1, obj2) => obj2.start.getTime() - obj1.start.getTime());
   }
 }

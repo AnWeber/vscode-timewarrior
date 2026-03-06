@@ -15,9 +15,5 @@ export class DataFileTreeItem extends vscode.TreeItem {
 }
 
 function getName(dataFile: DataFile) {
-  const month = dataFile.date.toLocaleString('default', { month: 'long' });
-  if (dataFile.date.getFullYear() === (new Date()).getFullYear()) {
-    return month;
-  }
-  return `${month} (${dataFile.date.getFullYear()})`
+  return dataFile.date.toLocaleString('default', { month: 'long' });
 }

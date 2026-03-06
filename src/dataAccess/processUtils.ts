@@ -18,7 +18,12 @@ export async function spawn(
     });
     process.on('exit', (code, signal) => {
       if (code === null) {
-        throw new Error(`Terminated by signal ${signal}`);
+        reject(new Error(`Terminated by signal ${signal}`));
+        return;
+      }
+      if (code !== 0) {
+        reject(new Error(stderr.join('') || `Process exited with code ${code}`));
+        return;
       }
       resolve({ stdout: stdout.join(''), stderr: stderr.join('') });
     });

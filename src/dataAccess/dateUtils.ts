@@ -33,8 +33,7 @@ export function equalsDay(date1: Date, date2: Date) {
     date1.getDate() === date2.getDate() &&
     date1.getMonth() === date2.getMonth() &&
     date1.getFullYear() === date2.getFullYear()
-  )
-  return date1.toDateString() === date2.toDateString();
+  );
 }
 
 export function formatDuration(time: number) {
@@ -42,7 +41,11 @@ export function formatDuration(time: number) {
   if (time < 60000) {
     return `${duration.format('s')}s`;
   }
-  return duration.format('HH:mm');
+  const totalHours = Math.floor(duration.asHours());
+  const minutes = duration.minutes();
+  const hoursLabel = String(totalHours).padStart(2, '0');
+  const minutesLabel = String(minutes).padStart(2, '0');
+  return `${hoursLabel}:${minutesLabel}`;
 }
 
 

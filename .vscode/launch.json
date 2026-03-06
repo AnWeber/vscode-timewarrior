@@ -5,6 +5,7 @@
 			"name": "Run Extension",
 			"type": "extensionHost",
 			"request": "launch",
+			"preLaunchTask": "npm: compile",
 			"runtimeExecutable": "${execPath}",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}"
@@ -18,6 +19,7 @@
 			"type": "extensionHost",
 			"debugWebWorkerHost": true,
 			"request": "launch",
+			"preLaunchTask": "npm: compile",
 			"runtimeExecutable": "${execPath}",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",

@@ -42,4 +42,8 @@ export class DataFile {
     this._intervals = intervals;
     return intervals;
   }
+
+  public invalidateIntervals() {
+    this._intervals = undefined;
+  }
 }

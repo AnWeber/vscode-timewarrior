@@ -1,3 +1,4 @@
+.npm-cache
 dist
-out
 node_modules
+out

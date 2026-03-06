@@ -7,8 +7,8 @@ export async function getInputArgs(dataFile: DataFile | undefined) {
     value: (await getLastTags(dataFile))?.join(', '),
     prompt: 'Please provide tags separated with comma.',
   });
-  if (result) {
-    return result.split(',').map(tag => tag.trim());
+  if (result !== undefined) {
+    return result.split(',').map(tag => tag.trim()).filter(Boolean);
   }
   return undefined;
 }
