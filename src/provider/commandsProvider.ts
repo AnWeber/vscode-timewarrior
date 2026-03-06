@@ -4,13 +4,10 @@ import * as actions from './actions';
 
 export class CommandsProvider extends DisposeProvider {
   #activeDataFile: DataFile | undefined;
-  constructor(private readonly dataFileEvent: vscode.Event<Array<DataFile>>) {
+  constructor() {
     super();
 
     this.subscriptions = [
-      dataFileEvent(dataFiles => {
-        this.#activeDataFile = dataFiles.find(obj => obj.isActive);
-      }),
       vscode.commands.registerCommand('timewarrior.start', this.start, this),
       vscode.commands.registerCommand('timewarrior.startNoTags', this.startNoTags, this),
       vscode.commands.registerCommand('timewarrior.startPrevTag', this.startPrevTag, this),
@@ -45,7 +42,7 @@ export class CommandsProvider extends DisposeProvider {
 
   private async tag() {
     const tags = await actions.getInputArgs(this.#activeDataFile);
-    if (tags) {
+    if (tags?.length) {
       await timew('tag', tags);
     }
   }

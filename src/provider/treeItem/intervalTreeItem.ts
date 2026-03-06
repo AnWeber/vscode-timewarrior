@@ -16,6 +16,8 @@ export class IntervalTreeItem extends vscode.TreeItem {
     result.push(interval.start.toLocaleTimeString());
     if (interval.end) {
       result.push(interval.end.toLocaleTimeString());
+    } else {
+      result.push('now');
     }
     return result.join(' - ');
   }

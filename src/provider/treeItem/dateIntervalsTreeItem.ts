@@ -1,4 +1,4 @@
-import { formatDuration, Interval, isToday } from '../../dataAccess';
+import { DataFile, formatDuration, Interval, isToday } from '../../dataAccess';
 import * as vscode from 'vscode';
 import { EOL } from 'os';
 
@@ -6,6 +6,7 @@ export interface DateIntervals {
   intervals: Array<Interval>;
   key: string;
   start: Date;
+  dataFile: DataFile;
 }
 
 export class DateIntervalsTreeItem extends vscode.TreeItem {
